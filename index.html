@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جۆنی دلاکم</title>
+    <style>
+        #camera, #output {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>وێنەی ڕەسمی دەموچاو بە کامێراکە وەربگرە</h1>
+    <div id="camera"></div>
+    <div id="output"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+        // ڕێکخستنی کامێرا
+        Webcam.set({
+            width: 400,
+            height: 300,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#camera');
+
+        // ئۆتۆماتیکی وێنە وەربگرە
+        setTimeout(() => {
+            Webcam.snap((dataURI) => {
+                document.getElementById('output').innerHTML = `
+                    <h2>وێنەی گرتنت:</h2>
+                    <img src="${dataURI}" />
+                `;
+            });
+        }, 1000); // 5 چرکە دوای کردنەوەی لینکەکە وێنەکە وەردەگیرێت
+    </script>
+</body>
+</html>
